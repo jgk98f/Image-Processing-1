@@ -1,0 +1,84 @@
+----------------------------------------------------------------------------
+README
+----------------------------------------------------------------------------
+Author: Jason Klamert
+Program: Objects
+Date: 9/23/2016
+Professor Bhatia
+Digital Image Processing
+----------------------------------------------------------------------------
+Summary:
+----------------------------------------------------------------------------
+
+The objects program draws a square, a rectangle, and a circle on a 640 x 480
+plane. First I create a cv::Mat object that is one channel with 8 bits to 
+represent a gray scale image. Then I proceed to call cvRectangle with a
+randomly generated point. Another point is made from the random point to they
+are fed into the cvRectangle function to draw the rectange. Then the pixels
+are processed one at a time and their intensity is set by using: OXFF - 'd' 
+where 'd' is the euclidian distance produced by:
+d = sqrt(((x1+x2)^2) - ((y1+y2)^2))
+
+This produces a gradient shading effect on the objects where the middle point
+is white and as the distance grows, the pixels become darker, or lose
+intensity. Both square objects are produced in the same fashion where two
+points are calculated then the center is calculated for the intensity 
+calculations. However, I had to switch the method of drawing the circle. 
+
+I had to use the cvRectangle method to draw the circle and fill in the pixels
+with a constant intensity of 255. I consider a rectangle around the circle a
+region of interest (ROI) and give any pixel of intensity 255 a newly calculated
+intensity of OXFF - distance from center. After this the image is displayed
+for the user.
+
+----------------------------------------------------------------------------
+Directions:
+----------------------------------------------------------------------------
+
+Makefile:
+	make -f MakeFile
+
+clean:
+	make -f MakeFile clean
+
+run:
+	objects
+
+----------------------------------------------------------------------------
+Questions:
+----------------------------------------------------------------------------
+1)A CCD camera chip of dimensions 7 x 7 mm,and having 1024 x 1024 elements,
+ is focused on a square, flat area, located 0.5m away. How many line pairs 
+per mm will this camera be able to resolve? The camera is equipped with a 
+35mm lens.(Hint: Model the imaging process as in Fig. 2.3, with the focal 
+length of the camera lens substituting for the focal length of the eye.)
+
+1 Answer) With this question being so closely related to the figure 2.3 there
+is relatively little work to do. Let 'h' denote our unknown height of the square
+we are trying to capture. Then we get (7mm/35mm) = (h/500mm) where 7mm is the height
+of our chip and 35mm being the distance from lens to chip and 500mm coming 
+from our converted 0.5m distance to the square. Solved this gives us h = 100mm.
+Since we have 1024 elements in that 100mm we do (1024/100) = 10 elements/mm. Since we
+want line pairs we divide by 2 to give us 5 linepairs/mm.
+
+2a)How many minutes would it take to transmit a 1024 x 1024 image with 256 
+intensity levels using a 56K baud modem?
+
+2a Answer) Total bits = Image Height * Image Width * bits for intensity
+	   lg(256) = 8 bit representation for intensity levels
+	   Total bits = 1024 * 1024 * 8 = 8,388,608bits
+	   At a rate of 56000bits/second, it would take (8,388,608bits/56000)bits/second
+	   which come to 149.79657seconds. If we divide by 60 for minutes, we 
+	   get 2.4966 minutes. Rounding for significance we get 2.50 minutes.
+
+2b)What would the time be at 3000K baud, a representative medium speed of a
+phone DSL connection?
+
+2b Answer) Total bits = Image Height * Image Width * bits for intensity
+           lg(256) = 8 bit representation for intensity levels
+           Total bits = 1024 * 1024 * 8 = 8,388,608bits
+	   At a rate of 3,000K baud or 3,000,000 bits/sec it would take
+ 	   (8,388,608(bits)/3,000,000(bits/sec)) = 2.7962 seconds
+	   If we round, it would be approximately 2.8 seconds to transfer
+	   the image.
+
